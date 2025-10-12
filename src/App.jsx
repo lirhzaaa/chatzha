@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages";
 
@@ -12,6 +13,7 @@ const App = () => {
           isOpen ? "ml-[240px]" : "ml-[80px]"
         }`}
       >
+        <Navbar />
         <Dashboard />
       </div>
     </div>
