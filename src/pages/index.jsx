@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send } from "lucide-react";
 
-const Dashboard = () => {
+const Dashboard = ({ setProjectName }) => {
   const [isActive, setIsActive] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -12,6 +12,10 @@ const Dashboard = () => {
     setMessages([...messages, { user: true, text: input }]);
     setInput("");
     setIsActive(true);
+
+    if (messages.length === 0) {
+      setProjectName(input);
+    }
   };
 
   useEffect(() => {
@@ -22,12 +26,12 @@ const Dashboard = () => {
 
   return (
     <div className="bg-[#191a1b] w-full min-h-[calc(100vh-52px)] flex flex-col items-center px-4 text-center relative overflow-hidden">
-      
       {!isActive ? (
-        <div className="flex flex-col items-center justify-center w-full pt-50"> 
+        <div className="flex flex-col items-center justify-center w-full pt-50">
           <div className="flex flex-col items-center text-white gap-2">
             <h1 className="font-medium text-3xl md:text-4xl">
-              Selamat Datang di <span className="text-blue-400 font-bold">Chatzha</span>
+              Selamat Datang di{" "}
+              <span className="text-blue-400 font-bold">Chatzha</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300">
               Saya siap membantu Anda kapan pun.
@@ -63,7 +67,9 @@ const Dashboard = () => {
                 <div
                   key={idx}
                   className={`my-2 p-3 rounded-lg max-w-[80%] ${
-                    msg.user ? "bg-blue-600 text-white self-end" : "bg-gray-700 text-white self-start"
+                    msg.user
+                      ? "bg-blue-600 text-white self-end"
+                      : "bg-gray-700 text-white self-start"
                   }`}
                 >
                   {msg.text}

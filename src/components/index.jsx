@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, cloneElement } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const Layouts = ({children}) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [projectName, setProjectName] = useState("");
 
   return (
     <div className="flex">
@@ -13,9 +14,9 @@ const Layouts = ({children}) => {
           isOpen ? "ml-[240px]" : "ml-[80px]"
         } relative`}
       >
-        <Navbar />
+        <Navbar projectName={projectName}/>
         <div> 
-          {children}
+          {children && cloneElement(children, {setProjectName})}
         </div>
       </div>
     </div>
