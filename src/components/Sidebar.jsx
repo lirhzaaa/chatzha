@@ -6,8 +6,7 @@ import {
   SquarePen,
 } from "lucide-react";
 
-
-const Navbar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const itemsMenu = [
     {
       id: 1,
@@ -104,7 +103,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
       </div>
 
       {isOpen && (
-        <div className="flex flex-col gap-2 mt-5">
+        <div className="flex flex-col gap-2 mt-5 overflow-hidden whitespace-nowrap transition-all duration-300">
           <span className="text-white text-sm">Obrolan Terbaru</span>
           <ul className="flex flex-col gap-2 mt-2">
             {Chats.map((chat) => (
@@ -113,10 +112,8 @@ const Navbar = ({ isOpen, setIsOpen }) => {
                   href={chat.path}
                   className="flex items-center gap-3 px-2 py-2 text-white text-left hover:bg-white/10 transition-all duration-300 rounded"
                 >
-                  <span className="flex-shrink-0">{chat.icon}</span>
-                  <span className="overflow-hidden whitespace-nowrap transition-all duration-300">
-                    {chat.name}
-                  </span>
+                  <span>{chat.icon}</span>
+                  <span>{chat.name}</span>
                 </a>
               </li>
             ))}
@@ -127,4 +124,4 @@ const Navbar = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default Navbar;
+export default Sidebar;
