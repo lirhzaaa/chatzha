@@ -3,7 +3,13 @@ import ChatWindow from "../components/Dashboard/ChatWindow";
 import ChatInput from "../components/Dashboard/ChatInput";
 import WelcomeScreen from "../components/Dashboard/WelcomeScreen";
 
-const Dashboard = ({ setProjectName, chats, setChats, activeChatId, setActiveChatId }) => {
+const Dashboard = ({
+  setProjectName,
+  chats,
+  setChats,
+  activeChatId,
+  setActiveChatId,
+}) => {
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
@@ -45,7 +51,10 @@ const Dashboard = ({ setProjectName, chats, setChats, activeChatId, setActiveCha
         body: JSON.stringify({ message: input }),
       });
       const data = await res.json();
-      const aiMessage = { sender: "AI", text: data.reply || "Tidak ada respons dari AI." };
+      const aiMessage = {
+        sender: "AI",
+        text: data.reply || "Tidak ada respons dari AI.",
+      };
 
       setChats((prev) =>
         prev.map((c) =>
@@ -56,7 +65,10 @@ const Dashboard = ({ setProjectName, chats, setChats, activeChatId, setActiveCha
       );
     } catch (error) {
       console.error("Error sending message:", error);
-      const errorMessage = { sender: "AI", text: "Terjadi kesalahan pada server. Coba lagi nanti." };
+      const errorMessage = {
+        sender: "AI",
+        text: "Terjadi kesalahan pada server. Coba lagi nanti.",
+      };
       setChats((prev) =>
         prev.map((c) =>
           c.id === (activeChatId || prev[0].id)
@@ -70,11 +82,19 @@ const Dashboard = ({ setProjectName, chats, setChats, activeChatId, setActiveCha
   return (
     <div className="bg-[#191a1b] w-full min-h-[calc(100vh-52px)] flex flex-col items-center px-4 text-center relative overflow-hidden">
       {!activeChat || activeChat.messages.length === 0 ? (
-        <WelcomeScreen input={input} setInput={setInput} handleSend={sendMessage} />
+        <WelcomeScreen
+          input={input}
+          setInput={setInput}
+          handleSend={sendMessage}
+        />
       ) : (
         <>
           <ChatWindow messages={activeChat.messages} chatEndRef={chatEndRef} />
-          <ChatInput input={input} setInput={setInput} handleSend={sendMessage} />
+          <ChatInput
+            input={input}
+            setInput={setInput}
+            handleSend={sendMessage}
+          />
         </>
       )}
     </div>

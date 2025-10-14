@@ -13,8 +13,8 @@ const Navbar = ({ projectName, activeChatId, handleDeleteChat }) => {
 
   return (
     <div className="p-5 bg-[#191a1b] border-b border-white/10 h-13 flex justify-between items-center text-white relative">
-      <h1 className="text-lg font-medium">
-        {isActive ? projectName : "Chatzha"}
+      <h1 className="text-lg font-medium truncate">
+       Chatzha
       </h1>
 
       {isActive && (

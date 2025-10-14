@@ -54,6 +54,7 @@ const Layouts = ({ children }) => {
         setIsOpen={setIsOpen}
         chats={chats}
         handleNewChat={handleNewChat}
+        handleDeleteChat={handleDeleteChat}
         setActiveChatId={setActiveChatId}
         activeChatId={activeChatId}
       />
