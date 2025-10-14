@@ -6,42 +6,29 @@ import {
   SquarePen,
 } from "lucide-react";
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({
+  isOpen,
+  setIsOpen,
+  chats = [],
+  handleNewChat,
+  setActiveChatId,
+  activeChatId,
+}) => {
   const itemsMenu = [
     {
       id: 1,
       icon: <SquarePen size={20} />,
       name: "Obrolan Baru",
-      path: "/",
+      action: handleNewChat,
     },
     {
       id: 2,
       icon: <Search size={20} />,
       name: "Cari Obrolan",
-      path: "/about",
+      path: "/",
     },
   ];
 
-  const Chats = [
-    {
-      id: 1,
-      icon: <MessageSquare size={18} />,
-      name: "Chat dengan Azhril",
-      path: "/chat/azhril",
-    },
-    {
-      id: 2,
-      icon: <MessageSquare size={18} />,
-      name: "Chat dengan Bob",
-      path: "/chat/bob",
-    },
-    {
-      id: 3,
-      icon: <MessageSquare size={18} />,
-      name: "Chat dengan Alice",
-      path: "/chat/alice",
-    },
-  ];
   return (
     <div
       className={`${
@@ -57,12 +44,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           }`}
         >
           {isOpen && (
-            <a
-              href="/"
-              className="text-white text-2xl font-semibold font-mono tracking-wide"
-            >
+            <span className="text-white text-2xl font-semibold font-mono tracking-wide">
               Chatzha
-            </a>
+            </span>
           )}
           <button
             className="p-2 rounded hover:bg-white/10 transition cursor-pointer"
@@ -75,48 +59,51 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             )}
           </button>
         </div>
+
         <ul
           className={`flex flex-col gap-2 ${
             isOpen ? "items-start" : "items-center"
           }`}
         >
-          {itemsMenu.map((item) => {
-            return (
-              <li key={item.id} className="w-full">
-                <a
-                  href={item.path}
-                  className={`flex items-center gap-3 px-2 py-2 text-white text-left hover:bg-white/10 transition-all duration-300 rounded ${
-                    !isOpen ? "text-center px-0" : ""
-                  }`}
-                >
-                  <span className="flex-shrink-0 text-white">{item.icon}</span>
-                  <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-300`}
-                  >
-                    {item.name}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
+          {itemsMenu.map((item) => (
+            <li key={item.id} className="w-full">
+              <button
+                onClick={item.action || (() => (window.location.href = item.path))}
+                className={`flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full transition-all duration-300 ${
+                  !isOpen ? "justify-center" : ""
+                }`}
+              >
+                <span className="flex-shrink-0">{item.icon}</span>
+                {isOpen && <span>{item.name}</span>}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
 
       {isOpen && (
-        <div className="flex flex-col gap-2 mt-5 overflow-hidden whitespace-nowrap transition-all duration-300">
+        <div className="flex flex-col gap-2 mt-6 overflow-hidden whitespace-nowrap transition-all duration-300">
           <span className="text-white text-sm">Obrolan Terbaru</span>
           <ul className="flex flex-col gap-2 mt-2">
-            {Chats.map((chat) => (
-              <li key={chat.id} className="w-full">
-                <a
-                  href={chat.path}
-                  className="flex items-center gap-3 px-2 py-2 text-white text-left hover:bg-white/10 transition-all duration-300 rounded"
-                >
-                  <span>{chat.icon}</span>
-                  <span>{chat.name}</span>
-                </a>
-              </li>
-            ))}
+            {chats.filter(c => c.messages.length > 0).length === 0 ? (
+              <li className="text-gray-400 text-sm px-2">Belum ada obrolan</li>
+            ) : (
+              chats
+                .filter((c) => c.messages.length > 0) 
+                .map((chat) => (
+                  <li key={chat.id}>
+                    <button
+                      onClick={() => setActiveChatId(chat.id)}
+                      className={`flex items-center gap-3 px-2 py-2 text-white rounded transition-all w-full text-left ${
+                        activeChatId === chat.id ? "bg-white/10" : "hover:bg-white/10"
+                      }`}
+                    >
+                      <MessageSquare size={18} />
+                      <span className="truncate">{chat.title}</span>
+                    </button>
+                  </li>
+                ))
+            )}
           </ul>
         </div>
       )}
