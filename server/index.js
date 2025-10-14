@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
-dotenv.config();
+dotenv.config({path:'../.env'});
 
 const app = express();
 const port = 5000;
