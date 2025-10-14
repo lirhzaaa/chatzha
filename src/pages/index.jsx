@@ -10,16 +10,44 @@ const Dashboard = ({ setProjectName }) => {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
+    const savedChat = localStorage.getItem("chatLog");
+    if (savedChat) {
+      try {
+        const parsed = JSON.parse(savedChat);
+        if (Array.isArray(parsed)) {
+          setChatLog(parsed);
+          setIsChatStarted(parsed.length > 0);
+        }
+      } catch (e) {
+        console.error("Error parsing saved chat:", e);
+      }
+    }
+
+    const savedProject = localStorage.getItem("projectName");
+    if (savedProject) setProjectName(savedProject);
+  }, []); 
+
+  useEffect(() => {
+    if (chatLog.length > 0) {
+      localStorage.setItem("chatLog", JSON.stringify(chatLog));
+    }
+  }, [chatLog]);
+
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatLog]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    if (chatLog.length === 0) setProjectName(input);
+    if (chatLog.length === 0) {
+      setProjectName(input);
+      localStorage.setItem("projectName", input);
+    }
 
     const userMessage = { sender: "You", text: input };
-    setChatLog((prev) => [...prev, userMessage]);
+    const updatedChat = [...chatLog, userMessage];
+    setChatLog(updatedChat);
     setInput("");
     setIsChatStarted(true);
 
@@ -33,7 +61,6 @@ const Dashboard = ({ setProjectName }) => {
       });
 
       const data = await response.json();
-
       const aiMessage = { sender: "AI", text: data.reply || "Tidak ada respons dari AI." };
       setChatLog((prev) => [...prev, aiMessage]);
     } catch (error) {
@@ -46,6 +73,13 @@ const Dashboard = ({ setProjectName }) => {
     }
   };
 
+  const clearChat = () => {
+    setChatLog([]);
+    localStorage.removeItem("chatLog");
+    localStorage.removeItem("projectName");
+    setIsChatStarted(false);
+  };
+
   return (
     <div className="bg-[#191a1b] w-full min-h-[calc(100vh-52px)] flex flex-col items-center px-4 text-center relative overflow-hidden">
       {!isChatStarted ? (
@@ -54,6 +88,12 @@ const Dashboard = ({ setProjectName }) => {
         <>
           <ChatWindow messages={chatLog} chatEndRef={chatEndRef} />
           <ChatInput input={input} setInput={setInput} handleSend={sendMessage} />
+          <button
+            onClick={clearChat}
+            className="mt-2 text-sm text-gray-400 hover:text-red-400 transition"
+          >
+            Hapus Chat
+          </button>
         </>
       )}
     </div>
