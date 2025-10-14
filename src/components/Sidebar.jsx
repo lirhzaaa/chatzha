@@ -33,11 +33,11 @@ const Sidebar = ({
     <div
       className={`${
         isOpen
-          ? "w-[240px] bg-[#131414]"
+          ? "w-[280px] bg-[#131414]"
           : "w-[80px] bg-[#191a1b] border-r border-white/10"
-      } h-screen fixed left-0 top-0 p-5 flex flex-col justify-start transition-all duration-300`}
+      } h-screen fixed left-0 top-0 p-5 flex flex-col transition-all duration-300 overflow-auto`}
     >
-      <div>
+      <div className="flex flex-col">
         <div
           className={`flex items-center justify-between mb-8 ${
             isOpen ? "px-2" : "justify-center"
@@ -68,7 +68,9 @@ const Sidebar = ({
           {itemsMenu.map((item) => (
             <li key={item.id} className="w-full">
               <button
-                onClick={item.action || (() => (window.location.href = item.path))}
+                onClick={
+                  item.action || (() => (window.location.href = item.path))
+                }
                 className={`flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full transition-all duration-300 ${
                   !isOpen ? "justify-center" : ""
                 }`}
@@ -79,34 +81,40 @@ const Sidebar = ({
             </li>
           ))}
         </ul>
-      </div>
 
-      {isOpen && (
-        <div className="flex flex-col gap-2 mt-6 overflow-hidden whitespace-nowrap transition-all duration-300">
-          <span className="text-white text-sm">Obrolan Terbaru</span>
-          <ul className="flex flex-col gap-2 mt-2">
-            {chats.filter(c => c.messages.length > 0).length === 0 ? (
-              <li className="text-gray-400 text-sm px-2">Belum ada obrolan</li>
-            ) : (
-              chats
-                .filter((c) => c.messages.length > 0) 
-                .map((chat) => (
-                  <li key={chat.id}>
-                    <button
-                      onClick={() => setActiveChatId(chat.id)}
-                      className={`flex items-center gap-3 px-2 py-2 text-white rounded transition-all w-full text-left ${
-                        activeChatId === chat.id ? "bg-white/10" : "hover:bg-white/10"
-                      }`}
-                    >
-                      <MessageSquare size={18} />
-                      <span className="truncate">{chat.title}</span>
-                    </button>
-                  </li>
-                ))
-            )}
-          </ul>
-        </div>
-      )}
+        {isOpen && (
+          <div className="flex flex-col gap-2 mt-6 whitespace-nowrap">
+            <span className="text-white text-sm">Obrolan Terbaru</span>
+            <ul className="flex flex-col gap-2 mt-2">
+              {chats.filter((c) => c.messages?.length > 0).length === 0 ? (
+                <li className="text-gray-400 text-sm px-2">
+                  Belum ada obrolan
+                </li>
+              ) : (
+                chats
+                  .filter((c) => c.messages?.length > 0)
+                  .map((chat) => (
+                    <li key={chat.id}>
+                      <button
+                        onClick={() => setActiveChatId(chat.id)}
+                        className={`flex items-center gap-3 px-2 py-2 text-white rounded transition-all w-full text-left ${
+                          activeChatId === chat.id
+                            ? "bg-white/10"
+                            : "hover:bg-white/10"
+                        }`}
+                      >
+                        <span className="flex-shrink-0">
+                          <MessageSquare size={18} />
+                        </span>
+                        <span className="truncate">{chat.title}</span>
+                      </button>
+                    </li>
+                  ))
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

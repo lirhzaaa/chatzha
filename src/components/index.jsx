@@ -16,23 +16,35 @@ const Layouts = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem("chats", JSON.stringify(chats));
+    const chatsWithMessages = chats.filter((chat) => chat.messages?.length > 0);
+    localStorage.setItem("chats", JSON.stringify(chatsWithMessages));
   }, [chats]);
 
   useEffect(() => {
-    if (activeChatId) localStorage.setItem("activeChatId", activeChatId);
-    else localStorage.removeItem("activeChatId");
-  }, [activeChatId]);
+    const activeChat = chats.find((c) => c.id === activeChatId);
+    if (activeChat && activeChat.title) {
+      setProjectName(activeChat.title);
+    } else {
+      setProjectName("");
+    }
+  }, [activeChatId, chats]);
 
   const handleNewChat = () => {
     const id = Date.now().toString();
     const newChat = {
       id,
-      title: "Obrolan Baru",
+      title: "",
       messages: [],
     };
     setChats((prev) => [newChat, ...prev]);
     setActiveChatId(id);
+  };
+
+  const handleDeleteChat = (id) => {
+    if (!id) return;
+    setChats((prev) => prev.filter((c) => c.id !== id));
+
+    if (activeChatId === id) setActiveChatId(null);
   };
 
   return (
@@ -47,10 +59,14 @@ const Layouts = ({ children }) => {
       />
       <div
         className={`transition-all duration-300 flex-1 ${
-          isOpen ? "ml-[240px]" : "ml-[80px]"
+          isOpen ? "ml-[280px]" : "ml-[80px]"
         } relative`}
       >
-        <Navbar projectName={projectName} />
+        <Navbar
+          projectName={projectName}
+          activeChatId={activeChatId}
+          handleDeleteChat={handleDeleteChat}
+        />
         <div>
           {children &&
             cloneElement(children, {
