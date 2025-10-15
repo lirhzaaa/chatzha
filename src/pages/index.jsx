@@ -19,68 +19,74 @@ const Dashboard = ({
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeChat?.messages?.length]);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-    if (!activeChatId) {
-      const id = Date.now().toString();
-      const newChat = { id, title: input.slice(0, 40), messages: [] };
-      setChats((prev) => [newChat, ...prev]);
-      setActiveChatId(id);
-    }
-
-    const userMessage = { sender: "You", text: input };
+  const addMessageToChat = (chatId, message) => {
     setChats((prev) =>
       prev.map((c) =>
-        c.id === (activeChatId || prev[0].id)
+        c.id === chatId
           ? {
               ...c,
-              messages: [...c.messages, userMessage],
+              messages: [...c.messages, message],
               title: c.messages.length === 0 ? input.slice(0, 40) : c.title,
             }
           : c
       )
     );
+  };
 
-    setProjectName(input);
+  const sendMessage = async () => {
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return;
+
+    let chatId = activeChatId;
+    if (!chatId) {
+      chatId = Date.now().toString();
+      const newChat = {
+        id: chatId,
+        title: trimmedInput.slice(0, 40),
+        messages: [],
+      };
+      setChats((prev) => [newChat, ...prev]);
+      setActiveChatId(chatId);
+    }
+
+    const userMessage = { sender: "You", text: trimmedInput };
+    addMessageToChat(chatId, userMessage);
+    setProjectName(trimmedInput);
     setInput("");
 
     try {
       const res = await fetch("http://localhost:5000/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: trimmedInput }),
       });
       const data = await res.json();
+
       const aiMessage = {
         sender: "AI",
         text: data.reply || "Tidak ada respons dari AI.",
       };
-
-      setChats((prev) =>
-        prev.map((c) =>
-          c.id === (activeChatId || prev[0].id)
-            ? { ...c, messages: [...c.messages, aiMessage] }
-            : c
-        )
-      );
+      addMessageToChat(chatId, aiMessage);
     } catch (error) {
       console.error("Error sending message:", error);
       const errorMessage = {
         sender: "AI",
         text: "Terjadi kesalahan pada server. Coba lagi nanti.",
       };
-      setChats((prev) =>
-        prev.map((c) =>
-          c.id === (activeChatId || prev[0].id)
-            ? { ...c, messages: [...c.messages, errorMessage] }
-            : c
-        )
-      );
+      addMessageToChat(chatId, errorMessage);
     }
   };
 
+  const containerHeight =
+    !activeChat || activeChat.messages.length === 0
+      ? "calc(100vh - 70px)"
+      : "calc(100vh - 82px)";
+
   return (
-    <div className="bg-[#191a1b] w-full min-h-[calc(100vh-52px)] flex flex-col items-center px-4 text-center relative overflow-hidden">
+    <div
+      className="bg-[#191a1b] w-full flex flex-col items-center px-4 text-center relative overflow-hidden"
+      style={{ minHeight: containerHeight }}
+    >
       {!activeChat || activeChat.messages.length === 0 ? (
         <WelcomeScreen
           input={input}
