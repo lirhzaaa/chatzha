@@ -30,7 +30,7 @@ const Sidebar = ({
         isOpen
           ? "w-[280px] bg-[#131414]"
           : "w-[80px] bg-[#191a1b] border-r border-white/10"
-      } h-screen fixed left-0 top-0 p-5 flex flex-col transition-all duration-300 overflow-auto z-50`}
+      } h-screen fixed left-0 top-0 p-5 flex flex-col transition-all duration-300 overflow-auto z-50 scrollbar-custom`}
     >
       <div
         className={`flex items-center justify-between mb-8 ${
@@ -54,8 +54,12 @@ const Sidebar = ({
         </button>
       </div>
 
-      <ul className={`flex flex-col gap-2 ${isOpen ? "items-start" : "items-center"}`}>
-        <li>
+      <ul
+        className={`flex flex-col gap-2 ${
+          isOpen ? "w-full items-start" : "items-center"
+        }`}
+      >
+        <li className="w-full">
           <button
             onClick={handleNewChat}
             className="flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full cursor-pointer"
@@ -66,7 +70,7 @@ const Sidebar = ({
             {isOpen && <span className="truncate">Obrolan Baru</span>}
           </button>
         </li>
-        <li>
+        <li className="w-full">
           <button
             onClick={() => (window.location.href = "/")}
             className="flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full cursor-pointer"
@@ -93,7 +97,9 @@ const Sidebar = ({
                     <button
                       onClick={() => setActiveChatId(chat.id)}
                       className={`flex items-center gap-3 px-2 py-2 text-white rounded w-full text-left cursor-pointer ${
-                        activeChatId === chat.id ? "bg-white/10" : "hover:bg-white/10"
+                        activeChatId === chat.id
+                          ? "bg-white/10"
+                          : "hover:bg-white/10"
                       }`}
                     >
                       <span className="flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center">

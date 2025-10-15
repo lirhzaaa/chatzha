@@ -1,8 +1,7 @@
-import React from "react";
 import { Send } from "lucide-react";
 
 const WelcomeScreen = ({ input, setInput, handleSend }) => (
-  <div className="flex flex-col items-center justify-center w-full pt-50">
+  <div className="flex flex-col items-center justify-center w-full pt-52">
     <div className="flex flex-col items-center text-white gap-2">
       <h1 className="font-medium text-3xl md:text-4xl">
         Selamat Datang di <span className="text-blue-400 font-bold">Chatzha</span>
