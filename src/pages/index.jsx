@@ -16,8 +16,37 @@ const Dashboard = ({
   const activeChat = chats.find((c) => c.id === activeChatId);
 
   useEffect(() => {
+    const saveChatId = localStorage.getItem("activeChatId");
+    if (saveChatId) {
+      setActiveChatId();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeChatId) {
+      localStorage.setItem("activeChatId", activeChatId);
+    }
+  }, [activeChatId]);
+
+  useEffect(() => {
+    const savedChatId = localStorage.getItem("activeChatId");
+    if (savedChatId && chats.some((c) => c.id === savedChatId)) {
+      setActiveChatId(savedChatId);
+    }
+  }, [chats]);
+
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeChat?.messages?.length]);
+
+      useEffect(() => {
+      if (chats.length === 0 && !activeChatId) {
+        const newId = Date.now().toString();
+        const newChat = { id: newId, title: "Obrolan Baru", message: [] };
+        setChats([newChat]);
+        setActiveChatId(newId);
+      }
+    });
 
   const addMessageToChat = (chatId, message) => {
     setChats((prev) =>
