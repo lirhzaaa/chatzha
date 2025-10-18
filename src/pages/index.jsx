@@ -39,14 +39,14 @@ const Dashboard = ({
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeChat?.messages?.length]);
 
-      useEffect(() => {
-      if (chats.length === 0 && !activeChatId) {
-        const newId = Date.now().toString();
-        const newChat = { id: newId, title: "Obrolan Baru", messages: [] };
-        setChats([newChat]);
-        setActiveChatId(newId);
-      }
-    }, [chats, activeChatId]);
+  useEffect(() => {
+    if (chats.length === 0 && !activeChatId) {
+      const newId = Date.now().toString();
+      const newChat = { id: newId, title: "Obrolan Baru", messages: [] };
+      setChats([newChat]);
+      setActiveChatId(newId);
+    }
+  }, [chats, activeChatId]);
 
   const addMessageToChat = (chatId, message) => {
     setChats((prev) =>
@@ -84,7 +84,7 @@ const Dashboard = ({
     setInput("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat", {
+      const res = await fetch("/api", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmedInput }),
