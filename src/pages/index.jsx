@@ -18,7 +18,7 @@ const Dashboard = ({
   useEffect(() => {
     const saveChatId = localStorage.getItem("activeChatId");
     if (saveChatId) {
-      setActiveChatId();
+      setActiveChatId(saveChatId);
     }
   }, []);
 
@@ -42,11 +42,11 @@ const Dashboard = ({
       useEffect(() => {
       if (chats.length === 0 && !activeChatId) {
         const newId = Date.now().toString();
-        const newChat = { id: newId, title: "Obrolan Baru", message: [] };
+        const newChat = { id: newId, title: "Obrolan Baru", messages: [] };
         setChats([newChat]);
         setActiveChatId(newId);
       }
-    });
+    }, [chats, activeChatId]);
 
   const addMessageToChat = (chatId, message) => {
     setChats((prev) =>
