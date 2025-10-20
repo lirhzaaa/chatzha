@@ -1,16 +1,30 @@
-# React + Vite
+# 🧠 Chatzha - Your AI Chat Companion
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chatzha is a modern web-based AI chat application designed to provide an intuitive and natural conversational experience. Built using React and powered by the Gemini API, this project demonstrates a clean, responsive, and efficient chat interface that feels fluid and engaging for users.
 
-Currently, two official plugins are available:
+## ⚙️ Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React.js** – Frontend framework for building interactive UI  
+- **Tailwind CSS** – Utility-first CSS framework for modern design 
+- **Lucide React** – Icon library for consistent and elegant visuals  
+- **Gemini API** – AI integration for real-time intelligent responses  
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Real-time conversations powered by Gemini AI  
+- Clean and minimalistic user interface  
+- Fully responsive layout for desktop and mobile  
+- Smooth animations and transitions  
+- Simple, scalable, and maintainable project structure  
 
-## Expanding the ESLint configuration
+## 🎯 Why I Built This Project
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Chatzha was created as a personal portfolio project to showcase my skills in building interactive web applications with AI integration. The goal is to explore how front-end technologies can be combined with modern AI APIs to deliver engaging and intelligent user experiences.
+
+## 🌐 Live Demo
+
+[https://chatzha.vercel.app/](https://chatzha.vercel.app/)
+
+## 👨‍💻 About the Developer
+
+Created by **Muhammad Azhril Nurmaulidan**, a front-end developer passionate about crafting modern, user-focused web applications and exploring the potential of AI in interactive design.
