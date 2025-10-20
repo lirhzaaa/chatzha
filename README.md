@@ -1,4 +1,4 @@
-# 🧠 Chatzha - Your AI Chat Companion
+# 🤖 Chatzha - Your AI Chat Companion
 
 Chatzha is a modern web-based AI chat application designed to provide an intuitive and natural conversational experience. Built using React and powered by the Gemini API, this project demonstrates a clean, responsive, and efficient chat interface that feels fluid and engaging for users.
 
