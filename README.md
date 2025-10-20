@@ -4,10 +4,10 @@ Chatzha is a modern web-based AI chat application designed to provide an intuiti
 
 ## ⚙️ Tech Stack
 
-- **React.js** – Frontend framework for building interactive UI  
-- **Tailwind CSS** – Utility-first CSS framework for modern design 
-- **Lucide React** – Icon library for consistent and elegant visuals  
-- **Gemini API** – AI integration for real-time intelligent responses  
+- **React.js** - Frontend framework for building interactive UI  
+- **Tailwind CSS** - Utility-first CSS framework for modern design 
+- **Lucide React** - Icon library for consistent and elegant visuals  
+- **Gemini API** - AI integration for real-time intelligent responses  
 
 ## ✨ Features
 
