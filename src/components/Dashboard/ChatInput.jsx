@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Send } from "lucide-react";
+import Button from "../Button";
 
 const ChatInput = ({ input, setInput, handleSend }) => {
   const textareaRef = useRef(null);
@@ -30,13 +31,18 @@ const ChatInput = ({ input, setInput, handleSend }) => {
             }
           }}
         />
-        <button
+        <Button
           onClick={handleSend}
           aria-label="Kirim"
-          className="bg-blue-600 text-white w-12 h-12 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+          position="flex items-center justify-center"
+          bgColor="bg-blue-600 hover:bg-blue-700 transition-colors"
+          textColor="white"
+          width="w-12"
+          height="h-12"
+          borderRadius="rounded-lg"
         >
           <Send />
-        </button>
+        </Button>
       </div>
       <span className="justify-center items-center text-xs text-gray-400 pt-3">
         Chatzha mungkin menghasilkan informasi yang tidak akurat

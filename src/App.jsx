@@ -1,4 +1,4 @@
-import Layouts from "./components";
+import Layouts from "./components/Layouts";
 import Dashboard from "./pages";
 
 const App = () => {

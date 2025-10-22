@@ -3,7 +3,10 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const Layouts = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => {
+    const saved = localStorage.getItem("sidebarIsOpen");
+    return saved ? JSON.parse(saved) : true;
+  });
   const [projectName, setProjectName] = useState("");
 
   const [chats, setChats] = useState(() => {
@@ -14,6 +17,10 @@ const Layouts = ({ children }) => {
     const saved = localStorage.getItem("activeChatId");
     return saved || null;
   });
+
+  useEffect(() => {
+    localStorage.setItem("sidebarIsOpen", JSON.stringify(isOpen));
+  }, [isOpen]);
 
   useEffect(() => {
     const chatsWithMessages = chats.filter((chat) => chat.messages?.length > 0);

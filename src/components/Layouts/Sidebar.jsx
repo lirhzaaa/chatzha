@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../Button";
 import {
   MessageSquare,
   PanelLeft,
@@ -42,8 +43,11 @@ const Sidebar = ({
             Chatzha
           </span>
         )}
-        <button
-          className="p-2 rounded hover:bg-white/10 transition cursor-pointer"
+        <Button
+          className="cursor-pointer"
+          bgColor="hover:bg-white/10 transition"
+          padding="p-2"
+          borderRadius="rounded"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
@@ -51,37 +55,43 @@ const Sidebar = ({
           ) : (
             <PanelRight size={22} color="white" />
           )}
-        </button>
+        </Button>
       </div>
 
-      <ul
+      <div
         className={`flex flex-col gap-2 ${
           isOpen ? "w-full items-start" : "items-center"
         }`}
       >
-        <li className="w-full">
-          <button
-            onClick={handleNewChat}
-            className="flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full cursor-pointer"
-          >
-            <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
-              <SquarePen size={20} />
-            </span>
-            {isOpen && <span className="truncate">Obrolan Baru</span>}
-          </button>
-        </li>
-        <li className="w-full">
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="flex items-center gap-3 px-2 py-2 text-white hover:bg-white/10 rounded w-full cursor-pointer"
-          >
-            <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
-              <Search size={20} />
-            </span>
-            {isOpen && <span className="truncate">Cari Obrolan</span>}
-          </button>
-        </li>
-      </ul>
+        <Button
+          className="flex items-center gap-3 cursor-pointer"
+          textColor="white"
+          bgColor="hover:bg-white/10"
+          width="w-full"
+          padding="px-2 py-2"
+          borderRadius="rounded"
+          onClick={handleNewChat}
+        >
+          <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
+            <SquarePen size={20} />
+          </span>
+          {isOpen && <span className="truncate">Obrolan Baru</span>}
+        </Button>
+        <Button
+          className="flex items-center gap-3 cursor-pointer"
+          textColor="white"
+          bgColor="hover:bg-white/10"
+          width="w-full"
+          padding="px-2 py-2"
+          borderRadius="rounded"
+          onClick={() => (window.location.href = "/")}
+        >
+          <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
+            <Search size={20} />
+          </span>
+          {isOpen && <span className="truncate">Cari Obrolan</span>}
+        </Button>
+      </div>
 
       {isOpen && (
         <div className="flex flex-col gap-2 mt-6 whitespace-nowrap">
@@ -94,7 +104,7 @@ const Sidebar = ({
                 .filter((c) => c.messages?.length > 0)
                 .map((chat) => (
                   <li key={chat.id} className="relative group">
-                    <button
+                    <Button
                       onClick={() => setActiveChatId(chat.id)}
                       className={`flex items-center gap-3 px-2 py-2 text-white rounded w-full text-left cursor-pointer ${
                         activeChatId === chat.id
@@ -113,11 +123,11 @@ const Sidebar = ({
                       >
                         <Ellipsis size={18} />
                       </span>
-                    </button>
+                    </Button>
 
                     {openDropdownId === chat.id && (
                       <div className="absolute right-0 top-0 mt-12 w-32 bg-[#131414] border border-white/20 rounded shadow-lg z-50">
-                        <button
+                        <Button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteChat(chat.id);
@@ -126,7 +136,7 @@ const Sidebar = ({
                           className="w-full text-left px-4 py-2 text-white hover:bg-red-600 transition"
                         >
                           Hapus
-                        </button>
+                        </Button>
                       </div>
                     )}
                   </li>

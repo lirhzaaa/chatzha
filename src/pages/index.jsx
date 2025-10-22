@@ -108,7 +108,7 @@ const Dashboard = ({
 
   const containerHeight =
     !activeChat || activeChat.messages.length === 0
-      ? "calc(100vh - 70px)"
+      ? "calc(100vh - 69px)"
       : "calc(100vh - 82px)";
 
   return (

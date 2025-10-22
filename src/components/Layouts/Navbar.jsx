@@ -1,5 +1,6 @@
 import { Ellipsis } from "lucide-react";
 import { useState } from "react";
+import Button from "../Button";
 
 const Navbar = ({ projectName, activeChatId, handleDeleteChat }) => {
   const isActive = projectName !== "";
@@ -19,18 +20,18 @@ const Navbar = ({ projectName, activeChatId, handleDeleteChat }) => {
 
       {isActive && (
         <div className="relative">
-          <button onClick={toggleDropdown} className="p-2 rounded hover:bg-white/10 transition">
+          <Button onClick={toggleDropdown} className="p-2 rounded hover:bg-white/10 transition">
             <Ellipsis />
-          </button>
+          </Button>
 
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-32 bg-[#131414] border border-white/20 rounded shadow-lg z-10">
-              <button
+              <Button
                 onClick={handleDelete}
                 className="w-full text-left px-4 py-2 text-white hover:bg-red-600 transition"
               >
                 Hapus
-              </button>
+              </Button>
             </div>
           )}
         </div>
