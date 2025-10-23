@@ -1,8 +1,8 @@
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, PanelRight } from "lucide-react";
 import { useState } from "react";
 import Button from "../Button";
 
-const Navbar = ({ projectName, activeChatId, handleDeleteChat }) => {
+const Navbar = ({ projectName, activeChatId, handleDeleteChat, isMobile, toggleSidebar }) => {
   const isActive = projectName !== "";
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -14,9 +14,17 @@ const Navbar = ({ projectName, activeChatId, handleDeleteChat }) => {
 
   return (
     <div className="p-5 bg-[#191a1b] border-b border-white/10 h-13 flex justify-between items-center text-white relative">
-      <h1 className="text-lg font-medium truncate">
-       Chatzha
-      </h1>
+      <div className="flex items-center gap-3">
+        {isMobile && (
+          <Button
+            onClick={toggleSidebar}
+            className="p-2 rounded hover:bg-white/10 transition"
+          >
+            <PanelRight />
+          </Button>
+        )}
+        <h1 className="text-lg font-medium truncate">Chatzha</h1>
+      </div>
 
       {isActive && (
         <div className="relative">

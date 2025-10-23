@@ -9,7 +9,7 @@ const ChatInput = ({ input, setInput, handleSend }) => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height =
-        Math.min(textareaRef.current.scrollHeight, 250) + "px"; // batasi tinggi maksimal
+        Math.min(textareaRef.current.scrollHeight, 250) + "px";
     }
   }, [input]);
 

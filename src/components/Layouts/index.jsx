@@ -7,6 +7,7 @@ const Layouts = ({ children }) => {
     const saved = localStorage.getItem("sidebarIsOpen");
     return saved ? JSON.parse(saved) : true;
   });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const [projectName, setProjectName] = useState("");
 
   const [chats, setChats] = useState(() => {
@@ -18,9 +19,18 @@ const Layouts = ({ children }) => {
     return saved || null;
   });
 
+  
   useEffect(() => {
-    localStorage.setItem("sidebarIsOpen", JSON.stringify(isOpen));
-  }, [isOpen]);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) {
+      localStorage.setItem("sidebarIsOpen", JSON.stringify(isOpen));
+    }
+  }, [isOpen, isMobile]);
 
   useEffect(() => {
     const chatsWithMessages = chats.filter((chat) => chat.messages?.length > 0);
@@ -55,7 +65,7 @@ const Layouts = ({ children }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex relative">
       <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -64,16 +74,27 @@ const Layouts = ({ children }) => {
         handleDeleteChat={handleDeleteChat}
         setActiveChatId={setActiveChatId}
         activeChatId={activeChatId}
+        isMobile={isMobile}
       />
+
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
       <div
         className={`transition-all duration-300 flex-1 ${
-          isOpen ? "ml-[280px]" : "ml-[80px]"
+          !isMobile ? (isOpen ? "ml-[280px]" : "ml-[80px]") : ""
         } relative`}
       >
         <Navbar
           projectName={projectName}
           activeChatId={activeChatId}
           handleDeleteChat={handleDeleteChat}
+          isMobile={isMobile}
+          toggleSidebar={() => setIsOpen(!isOpen)}
         />
         <div>
           {children &&

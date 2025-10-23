@@ -67,6 +67,8 @@ const Dashboard = ({
     if (!trimmedInput) return;
 
     let chatId = activeChatId;
+    let isNewChat = false;
+
     if (!chatId) {
       chatId = Date.now().toString();
       const newChat = {
@@ -76,6 +78,7 @@ const Dashboard = ({
       };
       setChats((prev) => [newChat, ...prev]);
       setActiveChatId(chatId);
+      isNewChat = true;
     }
 
     const userMessage = { sender: "You", text: trimmedInput };
@@ -104,6 +107,13 @@ const Dashboard = ({
       };
       addMessageToChat(chatId, errorMessage);
     }
+
+    if (isNewChat) {
+      setTimeout(() => {
+        const savedChatId = localStorage.getItem("activeChatId");
+        if (savedChatId) setActiveChatId(savedChatId);
+      }, 300);
+    }
   };
 
   const containerHeight =
@@ -113,7 +123,7 @@ const Dashboard = ({
 
   return (
     <div
-      className="bg-[#191a1b] w-full flex flex-col items-center px-4 text-center relative overflow-hidden"
+      className="bg-[#191a1b] w-full flex flex-col items-center px-4 py-7 text-center relative overflow-hidden"
       style={{ minHeight: containerHeight }}
     >
       {!activeChat || activeChat.messages.length === 0 ? (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import {
   MessageSquare,
@@ -17,21 +17,58 @@ const Sidebar = ({
   setActiveChatId,
   activeChatId,
   handleDeleteChat,
+  isMobile,
 }) => {
   const [openDropdownId, setOpenDropdownId] = useState(null);
+  const sidebarRef = useRef(null);
 
   const toggleDropdown = (e, chatId) => {
     e.stopPropagation();
     setOpenDropdownId((prev) => (prev === chatId ? null : chatId));
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sidebarRef.current && !sidebarRef.current.containes(e.target)) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const SidebarButton = ({ icon: Icon, label, onClick, isOpen }) => (
+    <Button
+      className="flex items-center gap-3 cursor-pointer"
+      textColor="white"
+      bgColor="hover:bg-white/10"
+      width="w-full"
+      padding="px-2 py-2"
+      borderRadius="rounded"
+      onClick={onClick}
+    >
+      <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
+        <Icon size={20} />
+      </span>
+      {isOpen && <span className="truncate text-md">{label}</span>}
+    </Button>
+  );
+
   return (
     <div
-      className={`${
-        isOpen
-          ? "w-[280px] bg-[#131414]"
-          : "w-[80px] bg-[#191a1b] border-r border-white/10"
-      } h-screen fixed left-0 top-0 p-5 flex flex-col transition-all duration-300 overflow-auto z-50 scrollbar-custom`}
+      ref={sidebarRef}
+      className={`fixed top-0 left-0 h-screen transition-all duration-300 z-50 p-5 overflow-y-auto scrollbar-custom
+
+        ${
+          isMobile
+            ? isOpen
+              ? "translate-x-0 w-[260px] bg-[#131414]"
+              : "-translate-x-full"
+            : isOpen
+            ? "w-[280px] bg-[#131414]"
+            : "w-[80px] bg-[#191a1b] border-r border-white/10"
+        }
+      `}
     >
       <div
         className={`flex items-center justify-between mb-8 ${
@@ -39,9 +76,12 @@ const Sidebar = ({
         }`}
       >
         {isOpen && (
-          <span className="text-white text-2xl font-semibold font-mono tracking-wide">
+          <Button
+            className="text-white text-2xl font-semibold font-mono tracking-wide"
+            onClick={handleNewChat}
+          >
             Chatzha
-          </span>
+          </Button>
         )}
         <Button
           className="cursor-pointer"
@@ -51,9 +91,9 @@ const Sidebar = ({
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
-            <PanelLeft size={22} color="white" />
+            <PanelLeft size={20} color="white" />
           ) : (
-            <PanelRight size={22} color="white" />
+            <PanelRight size={20} color="white" />
           )}
         </Button>
       </div>
@@ -63,34 +103,18 @@ const Sidebar = ({
           isOpen ? "w-full items-start" : "items-center"
         }`}
       >
-        <Button
-          className="flex items-center gap-3 cursor-pointer"
-          textColor="white"
-          bgColor="hover:bg-white/10"
-          width="w-full"
-          padding="px-2 py-2"
-          borderRadius="rounded"
+        <SidebarButton
+          icon={SquarePen}
+          label="Obrolan Baru"
           onClick={handleNewChat}
-        >
-          <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
-            <SquarePen size={20} />
-          </span>
-          {isOpen && <span className="truncate">Obrolan Baru</span>}
-        </Button>
-        <Button
-          className="flex items-center gap-3 cursor-pointer"
-          textColor="white"
-          bgColor="hover:bg-white/10"
-          width="w-full"
-          padding="px-2 py-2"
-          borderRadius="rounded"
-          onClick={() => (window.location.href = "/")}
-        >
-          <span className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
-            <Search size={20} />
-          </span>
-          {isOpen && <span className="truncate">Cari Obrolan</span>}
-        </Button>
+          isOpen={isOpen}
+        />
+        <SidebarButton
+          icon={Search}
+          label="Cari Obrolan"
+          onClick={() => alert('Mohon Maaf Fitur Search Belum Tersedia🙏🏻')}
+          isOpen={isOpen}
+        />
       </div>
 
       {isOpen && (
@@ -115,7 +139,7 @@ const Sidebar = ({
                       <span className="flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center">
                         <MessageSquare size={18} />
                       </span>
-                      <span className="truncate">{chat.title}</span>
+                      <span className="truncate text-sm">{chat.title}</span>
 
                       <span
                         className="ml-auto opacity-0 group-hover:opacity-100 transition cursor-pointer"
@@ -126,7 +150,7 @@ const Sidebar = ({
                     </Button>
 
                     {openDropdownId === chat.id && (
-                      <div className="absolute right-0 top-0 mt-12 w-32 bg-[#131414] border border-white/20 rounded shadow-lg z-50">
+                      <div className="absolute right-0 top-0 mt-10 w-32 bg-[#131414] border border-white/20 rounded shadow-lg z-50">
                         <Button
                           onClick={(e) => {
                             e.stopPropagation();
