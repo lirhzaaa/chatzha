@@ -27,7 +27,6 @@ const ChatMessage = ({ msg }) => {
           isUser ? "bg-gray-700 text-white" : "bg-gray-700/15 text-gray-100"
         }`}
       >
-        {/* wrapper div untuk styling, jangan kasih className ke ReactMarkdown */}
         <div className="prose prose-invert max-w-none m-0">
           <ReactMarkdown>{msg.text}</ReactMarkdown>
         </div>
