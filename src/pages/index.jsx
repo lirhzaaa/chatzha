@@ -90,7 +90,7 @@ const Dashboard = ({
     setIsLoading(true);
     addMessageToChat(chatId, { sender: "AI", loading: true });
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch("/api", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmedInput }),
