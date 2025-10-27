@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Send } from "lucide-react";
 import Button from "../Button";
 
-const ChatInput = ({ input, setInput, handleSend }) => {
+const ChatInput = ({ input, setInput, handleSend, isLoading }) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -23,25 +23,38 @@ const ChatInput = ({ input, setInput, handleSend }) => {
           placeholder="Apa yang bisa saya bantu hari ini?"
           aria-label="Pertanyaan"
           rows={1}
+          disabled={isLoading}
           className="flex-1 px-4 py-3 placeholder-gray-400 focus:outline-none resize-none overflow-y-auto max-h-[250px] text-sm text-white bg-transparent scrollbar-custom"
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            if (e.key === "Enter" && !e.shiftKey && !isLoading) {
               e.preventDefault();
               handleSend();
             }
           }}
         />
         <Button
-          onClick={handleSend}
+          onClick={!isLoading ? handleSend : undefined}
           aria-label="Kirim"
           position="flex items-center justify-center"
-          bgColor="bg-blue-600 hover:bg-blue-700 transition-colors"
+          bgColor={`${
+            isLoading
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 transition-colors"
+          }`}
           textColor="white"
           width="w-12"
           height="h-12"
           borderRadius="rounded-lg"
         >
-          <Send />
+          {isLoading ? (
+            <div className="flex gap-1">
+              <span className="dot-1 animate-bounce">•</span>
+              <span className="dot-2 animate-bounce [animation-delay:0.2s]">•</span>
+              <span className="dot-3 animate-bounce [animation-delay:0.4s]">•</span>
+            </div>
+          ) : (
+            <Send />
+          )}
         </Button>
       </div>
       <span className="justify-center items-center text-xs text-gray-400 pt-3">

@@ -11,6 +11,7 @@ const Dashboard = ({
   setActiveChatId,
 }) => {
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
   const activeChat = chats.find((c) => c.id === activeChatId);
@@ -86,13 +87,39 @@ const Dashboard = ({
     setProjectName(trimmedInput);
     setInput("");
 
+    setIsLoading(true);
+    addMessageToChat(chatId, { sender: "AI", loading: true });
     try {
-      const res = await fetch("/api", {
+      const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmedInput }),
       });
-      const data = await res.json();
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(
+          `Server returned ${res.status} ${res.statusText} - ${text}`
+        );
+      }
+      const contentType = res.headers.get("content-type") || "";
+      let data;
+      if (contentType.includes("application/json")) {
+        data = await res.json().catch(() => ({}));
+      } else {
+        const text = await res.text().catch(() => "");
+        data = { reply: text };
+      }
+      setChats((prev) =>
+        prev.map((c) =>
+          c.id === chatId
+            ? {
+                ...c,
+                messages: c.messages.filter((m) => !m.loading),
+              }
+            : c
+        )
+      );
 
       const aiMessage = {
         sender: "AI",
@@ -101,11 +128,26 @@ const Dashboard = ({
       addMessageToChat(chatId, aiMessage);
     } catch (error) {
       console.error("Error sending message:", error);
+
+      setChats((prev) =>
+        prev.map((c) =>
+          c.id === chatId
+            ? {
+                ...c,
+                messages: c.messages.filter((m) => !m.loading),
+              }
+            : c
+        )
+      );
+
       const errorMessage = {
         sender: "AI",
         text: "Terjadi kesalahan pada server. Coba lagi nanti.",
       };
+
       addMessageToChat(chatId, errorMessage);
+    } finally {
+      setIsLoading(false);
     }
 
     if (isNewChat) {
@@ -139,6 +181,7 @@ const Dashboard = ({
             input={input}
             setInput={setInput}
             handleSend={sendMessage}
+            isLoading={isLoading} 
           />
         </>
       )}
