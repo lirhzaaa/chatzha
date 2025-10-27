@@ -29,7 +29,7 @@ const Sidebar = ({
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (sidebarRef.current && !sidebarRef.current.containes(e.target)) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
         setOpenDropdownId(null);
       }
     };
@@ -112,7 +112,7 @@ const Sidebar = ({
         <SidebarButton
           icon={Search}
           label="Cari Obrolan"
-          onClick={() => alert('Mohon Maaf Fitur Search Belum Tersedia🙏🏻')}
+          onClick={() => alert("Mohon Maaf Fitur Search Belum Tersedia🙏🏻")}
           isOpen={isOpen}
         />
       </div>
